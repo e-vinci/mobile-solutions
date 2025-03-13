@@ -1,10 +1,10 @@
-import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import '../view_models/click_view_model.dart';
 
 class FirstScreen extends StatelessWidget {
-  final int nbClicks;
-
-  const FirstScreen({super.key, this.nbClicks = 0});
+  const FirstScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,19 +14,27 @@ class FirstScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       ),
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text("Hello from first screen."),
-            const SizedBox(height: 16),
-            Text("There were $nbClicks clicks in the second page."),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () => context.go("/secondscreen"),
-              child: const Text("Go to second screen"),
-            ),
-            Expanded(child: UserListView()),
-          ],
+        child: Consumer<ClickViewModel>(
+          builder: (context, viewModel, child) => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text("Hello from first screen."),
+              const SizedBox(height: 16),
+              Text("There were ${viewModel.clicks} clicks."),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => viewModel.increment(),
+                child: const Text("click me"),
+              ),
+              const SizedBox(height: 32),
+              ElevatedButton(
+                onPressed: () => context.go("/second"),
+                child: const Text("go to second screen"),
+              ),
+              const SizedBox(height: 32),
+              const Expanded(child: UserListView()),
+            ],
+          ),
         ),
       ),
     );
@@ -34,9 +42,9 @@ class FirstScreen extends StatelessWidget {
 }
 
 class UserListView extends StatelessWidget {
-  final List<String> usernames = ['mcCain123', 'greg123', 'sarah123'];
+  static const usernames = ['mcCain123', 'greg123', 'sarah123'];
 
-  UserListView({super.key});
+  const UserListView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +53,7 @@ class UserListView extends StatelessWidget {
       itemBuilder: (context, index) {
         final username = usernames[index];
         return ListTile(
-          title: Text(username),
+          title: Center(child: Text(username)),
           onTap: () => context.go('/users/$username'),
         );
       },
