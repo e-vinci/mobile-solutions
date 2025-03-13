@@ -15,20 +15,20 @@ class Article {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Article && runtimeType == other.runtimeType && id == other.id;
+          other is Article && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;
 }
 
-get defaultArticles {
+List<Article> get defaultArticles {
   final articles = [
     Article(title: "title", author: "author", content: "content"),
     Article(
         title: "Lorem Ipsum",
         author: "www.lipsum.com",
         content:
-            """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et diam at nulla scelerisque bibendum. Donec sagittis facilisis odio in fermentum. Nunc in sapien eros. Sed commodo purus ac bibendum laoreet. In quam leo, fermentum vel vulputate a, volutpat at leo. Sed dignissim, sapien nec commodo dapibus, dolor velit sodales ex, sit amet ornare sem tellus quis nibh. Donec placerat justo sed lectus laoreet, egestas tincidunt enim luctus. Aenean vel ligula nisi. Pellentesque arcu tellus, aliquam a orci a, scelerisque accumsan lectus. Curabitur ac urna ac massa mollis semper sed id tortor.
+        """Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et diam at nulla scelerisque bibendum. Donec sagittis facilisis odio in fermentum. Nunc in sapien eros. Sed commodo purus ac bibendum laoreet. In quam leo, fermentum vel vulputate a, volutpat at leo. Sed dignissim, sapien nec commodo dapibus, dolor velit sodales ex, sit amet ornare sem tellus quis nibh. Donec placerat justo sed lectus laoreet, egestas tincidunt enim luctus. Aenean vel ligula nisi. Pellentesque arcu tellus, aliquam a orci a, scelerisque accumsan lectus. Curabitur ac urna ac massa mollis semper sed id tortor.
 
 Praesent at mi aliquet, cursus arcu ac, congue magna. Maecenas ut ipsum nec dui imperdiet scelerisque. Curabitur fringilla posuere ipsum porta ornare. Nulla porttitor eget diam ac auctor. Quisque efficitur tortor vitae arcu lacinia rhoncus. Donec aliquam viverra sem, non pellentesque risus eleifend nec. Curabitur molestie, dui eget auctor rutrum, sapien sem condimentum leo, quis imperdiet lacus sem sit amet libero. Morbi nulla neque, suscipit nec molestie id, auctor mattis urna. Curabitur id tincidunt felis, id sollicitudin nunc. Aliquam eu justo eget quam semper placerat quis fringilla est. Vestibulum finibus quam sed lacus cursus, in tempus nunc tincidunt. Quisque ullamcorper purus quis ligula pulvinar, eu rhoncus libero luctus. Duis accumsan magna sed feugiat feugiat. Morbi imperdiet ligula eu dignissim efficitur. Phasellus commodo mi et sagittis ultrices. Vivamus sagittis blandit dui, eget tincidunt neque accumsan quis.
 

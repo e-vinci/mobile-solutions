@@ -58,7 +58,7 @@ class _FormScreenState extends State<FormScreen> {
                   maxLines: null,
                   controller: contentController,
                   decoration:
-                      const InputDecoration(labelText: "Article content"),
+                  const InputDecoration(labelText: "Article content"),
                   validator: (value) => (value == null || value == "")
                       ? "Content can't be empty"
                       : null,
@@ -77,6 +77,7 @@ class _FormScreenState extends State<FormScreen> {
 
                     Provider.of<ArticleViewModel>(context, listen: false)
                         .addArticle(newArticle);
+
                     // clear form thanks to the form key
                     key.currentState!.reset();
                   }

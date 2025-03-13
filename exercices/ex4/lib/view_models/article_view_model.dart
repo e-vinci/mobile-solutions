@@ -1,11 +1,13 @@
-// view model to deal with the state of the list of articles
-import 'package:flutter/cupertino.dart';
-
+import 'package:flutter/material.dart';
 import '../models/article.dart';
 
 class ArticleViewModel extends ChangeNotifier {
   bool _showRead = false;
   final List<Article> _articles = <Article>[];
+
+  ArticleViewModel() {
+    _articles.addAll(defaultArticles);
+  }
 
   bool get showRead => _showRead;
 
@@ -16,9 +18,8 @@ class ArticleViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Article? getArticleById(int id) {
-    return _articles.firstWhere((article) => article.id == id);
-  }
+  Article? getArticleById(int id) =>
+      _articles.firstWhere((article) => article.id == id);
 
   void addArticle(Article article) {
     _articles.add(article);

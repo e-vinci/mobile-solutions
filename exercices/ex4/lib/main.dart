@@ -25,8 +25,8 @@ final GoRouter _router = GoRouter(
           builder: (context, state) {
             final id = state.pathParameters['id']!;
             final Article? article =
-                Provider.of<ArticleViewModel>(context, listen: false)
-                    .getArticleById(int.parse(id));
+            Provider.of<ArticleViewModel>(context, listen: false)
+                .getArticleById(int.parse(id));
             return ArticleScreen(article: article!);
           },
         ),
@@ -35,15 +35,14 @@ final GoRouter _router = GoRouter(
   ],
 );
 
-void main() {
-  runApp(ChangeNotifierProvider<ArticleViewModel>(
-      create: (context) => ArticleViewModel(), child: const MyApp()));
-}
+void main() => runApp(ChangeNotifierProvider<ArticleViewModel>(
+  create: (context) => ArticleViewModel(),
+  child: const MyApp(),
+));
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
@@ -53,6 +52,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

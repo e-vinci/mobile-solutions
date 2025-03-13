@@ -16,15 +16,14 @@ class ArticleScreen extends StatelessWidget {
         title: const Text("Article"),
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       ),
-      floatingActionButton:
-          Consumer<ArticleViewModel>(builder: (context, viewModel, child) {
-        return FloatingActionButton(
+      floatingActionButton: Consumer<ArticleViewModel>(
+        builder: (context, viewModel, child) => FloatingActionButton(
           child: article.read
               ? const Icon(Icons.check_box)
               : const Icon(Icons.check_box_outline_blank),
           onPressed: () => viewModel.toggleRead(article),
-        );
-      }),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(32),
         child: Column(
