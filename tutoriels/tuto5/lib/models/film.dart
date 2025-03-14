@@ -11,16 +11,13 @@ class Film {
   final int duration;
   final String link;
 
-  const Film(this.id, this.title, this.director, this.duration, this.link);
-
-  Film.fromJson(Map<String, dynamic> jsonObj)
-      : this(
-    jsonObj["id"],
-    jsonObj["title"],
-    jsonObj["director"],
-    jsonObj["duration"],
-    jsonObj["link"],
-  );
+  const Film({
+    required this.id,
+    required this.title,
+    required this.director,
+    required this.duration,
+    required this.link,
+  });
 
   @override
   String toString() =>
@@ -33,7 +30,15 @@ class Film {
       throw Exception("Error ${response.statusCode} fetching movie");
     }
 
-    return Film.fromJson(jsonDecode(response.body));
+    final jsonObj = jsonDecode(response.body);
+
+    return Film(
+      id: jsonObj["id"],
+      title: jsonObj["title"],
+      director: jsonObj["director"],
+      duration: jsonObj["duration"],
+      link: jsonObj["link"],
+    );
   }
 
   static Future<List<Film>> fetchFilms() async {
@@ -45,7 +50,13 @@ class Film {
 
     return compute((input) {
       final jsonList = jsonDecode(input);
-      return jsonList.map<Film>((jsonObj) => Film.fromJson(jsonObj)).toList();
+      return jsonList.map<Film>((jsonObj) => Film(
+        id: jsonObj["id"],
+        title: jsonObj["title"],
+        director: jsonObj["director"],
+        duration: jsonObj["duration"],
+        link: jsonObj["link"],
+      )).toList();
     }, response.body);
   }
 
