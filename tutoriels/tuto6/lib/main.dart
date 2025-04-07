@@ -1,75 +1,67 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'services/post_service.dart';
+import 'view_models/post_view_model.dart';
+import 'view_models/theme_view_model.dart';
+import 'views/new_post.dart';
+import 'views/post_details.dart';
+import 'views/post_list.dart';
+import 'views/settings.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final databaseProvider = PostService();
+  await databaseProvider.initDatabase();
+  runApp(MyApp(postService: databaseProvider));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final PostService postService;
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomeScreen(),
-    );
-  }
-}
-
-class MyHomeScreen extends StatefulWidget {
-  const MyHomeScreen({super.key});
-
-  @override
-  _MyHomeScreenState createState() => _MyHomeScreenState();
-}
-
-class _MyHomeScreenState extends State<MyHomeScreen> {
-  Future<List<dynamic>> _fetchData() async {
-    final response =
-        await get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else {
-      throw Exception('Failed to load data');
-    }
-  }
+  const MyApp({super.key, required this.postService});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('FutureBuilder Example'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      body: FutureBuilder<List<dynamic>>(
-        future: Future.delayed(const Duration(seconds: 3), () => _fetchData()),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-              itemCount: snapshot.data?.length,
-              itemBuilder: (context, index) {
-                final post = snapshot.data?[index];
-                return ListTile(
-                  title: Text(post['title']),
-                  subtitle: Text(post['body']),
-                );
-              },
-            );
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text('${snapshot.error}'));
-          }
-
-          return const Center(child: CircularProgressIndicator());
-        },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<PostViewModel>(
+          create: (context) => PostViewModel(postService),
+        ),
+        ChangeNotifierProvider<ThemeViewModel>(
+          create: (context) => ThemeViewModel(),
+        ),
+      ],
+      child: MaterialApp.router(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(),
+        routerConfig: GoRouter(
+          initialLocation: '/',
+          routes: [
+            GoRoute(
+              path: '/',
+              builder: (context, state) => PostList(),
+              routes: [
+                GoRoute(
+                  path: 'new_post',
+                  builder: (context, state) => NewPost(),
+                ),
+                GoRoute(
+                  path: 'settings',
+                  builder: (context, state) => Settings(),
+                ),
+                GoRoute(
+                  path: 'posts/:id',
+                  builder:
+                      (context, state) =>
+                          PostDetails(postId: state.pathParameters['id'] ?? ''),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
