@@ -1,29 +1,22 @@
-import 'package:ex6/view_models/photo_view_model.dart';
-import 'package:ex6/views/add_photo_screen.dart';
-import 'package:ex6/views/photo_gallery_screen.dart';
+import 'package:ex6/services/article_service.dart';
+import 'package:ex6/view_models/article_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-final GoRouter _router = GoRouter(
-  initialLocation: '/',
-  routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const PhotoGalleryScreen(),
-      routes: [
-        GoRoute(
-          path: 'photos/add',
-          builder: (context, state) => const AddPhotoScreen(),
-        ),
-      ],
-    ),
-  ],
-);
+import 'views/create_screen.dart';
+import 'views/home_screen.dart';
 
-void main() {
-  runApp(ChangeNotifierProvider<PhotoViewModel>(
-      create: (context) => PhotoViewModel(), child: const MyApp()));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final ArticleService service = ArticleService();
+  await service.initDatabase();
+  runApp(
+    ChangeNotifierProvider<ArticleViewModel>(
+      create: (context) => ArticleViewModel(service),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -32,11 +25,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerConfig: _router,
-      title: 'Flutter Exercise 6',
+      title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+      ),
+      routerConfig: GoRouter(
+        routes: [
+          GoRoute(
+            path: "/",
+            builder: (context, child) => HomeScreen(),
+            routes: [
+              GoRoute(
+                path: "create",
+                builder: (context, child) => CreateScreen(),
+              ),
+            ],
+          ),
+        ],
+        initialLocation: "/",
       ),
     );
   }
