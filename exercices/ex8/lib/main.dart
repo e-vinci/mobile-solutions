@@ -1,53 +1,36 @@
-import 'package:ex8/views/display_all_pictures_screen.dart';
-
-import 'view_models/video_view_model.dart';
-import 'views/display_picture_screen.dart';
-import 'views/take_picture_screen.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
-final GoRouter _router = GoRouter(
-  initialLocation: '/',
-  routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => TakePictureScreen(),
-      routes: [
-        GoRoute(
-          path: 'display-picture',
-          builder: (context, state) {
-            return DisplayPictureScreen();
-          },
-        ),
-        GoRoute(
-          path: 'display-gallery',
-          builder: (context, state) {
-            return const DisplayAllPicturesScreen();
-          },
-        ),
-      ],
-    ),
-  ],
-);
+import 'views/editor_screen.dart';
+import 'views/home_screen.dart';
 
-void main() async {
-  runApp(ChangeNotifierProvider<VideoViewModel>(
-      create: (context) => VideoViewModel(), child: const MyApp()));
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      routerConfig: _router,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+      ),
+      routerConfig: GoRouter(
+        routes: [
+          GoRoute(
+            path: '/',
+            builder: (context, state) => const HomeScreen(),
+            routes: [
+              GoRoute(
+                path: 'editor',
+                builder: (context, state) =>
+                    EditorScreen(file: state.extra as PlatformFile?),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
