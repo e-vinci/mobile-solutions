@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../../models/dish.dart';
 import 'dish_widget.dart';
-import '../models/dish.dart';
 
-class Menu extends StatelessWidget {
+class MenuWidget extends StatelessWidget {
   final List<Dish> menu;
 
-  const Menu({super.key, required this.menu});
+  const MenuWidget({super.key, required this.menu});
 
   @override
   Widget build(BuildContext context) {

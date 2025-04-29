@@ -5,10 +5,8 @@
 import FlutterMacOS
 import Foundation
 
-import file_saver
-import path_provider_foundation
+import file_picker
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
-  FileSaverPlugin.register(with: registry.registrar(forPlugin: "FileSaverPlugin"))
-  PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))
+  FilePickerPlugin.register(with: registry.registrar(forPlugin: "FilePickerPlugin"))
 }

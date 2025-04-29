@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../models/dish.dart';
+import '../../models/cart_item.dart';
+import '../../utils/number_format.dart';
+import '../../view_models/app_view_model.dart';
 
-class CartItem extends StatelessWidget {
-  final Dish dish;
-  final int count;
-  final void Function(Dish) increase;
-  final void Function(Dish) decrease;
+class CartItemWidget extends StatelessWidget {
+  final CartItem item;
 
-  const CartItem({
-    super.key,
-    required this.dish,
-    required this.count,
-    required this.increase,
-    required this.decrease,
-  });
+  const CartItemWidget({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +20,11 @@ class CartItem extends StatelessWidget {
           children: [
             Expanded(
               child: ListTile(
-                title: Text(dish.name),
+                title: Text(item.dish.name),
                 subtitle: Text(
-                  'Unit price: ${dish.price} €\n'
-                  'Quantity: $count\n'
-                  'Total price: ${count * dish.price} €',
+                  'Unit price: ${formatter.format(item.dish.price)} €\n'
+                  'Quantity: ${item.count}\n'
+                  'Price : ${formatter.format(item.count * item.dish.price)} €',
                 ),
                 isThreeLine: true,
               ),
@@ -38,11 +32,13 @@ class CartItem extends StatelessWidget {
             Column(
               children: [
                 IconButton(
-                  onPressed: () => increase(dish),
+                  onPressed: () =>
+                      Provider.of<AppViewModel>(context).addToCart(item.dish),
                   icon: const Icon(Icons.add),
                 ),
                 IconButton(
-                  onPressed: () => decrease(dish),
+                  onPressed: () => Provider.of<AppViewModel>(context)
+                      .removeFromCart(item.dish),
                   icon: const Icon(Icons.remove),
                 ),
               ],

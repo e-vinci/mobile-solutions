@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import 'views/cart_screen.dart';
-import 'views/home_screen.dart';
-import 'view_models/cart_view_model.dart';
+import 'view_models/app_view_model.dart';
+import 'views/screens/cart_screen.dart';
+import 'views/screens/home_screen.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider<CartViewModel>(
-    create: (context) => CartViewModel(),
+  runApp(ChangeNotifierProvider<AppViewModel>(
+    create: (context) => AppViewModel(),
     child: const MyApp(),
   ));
 }
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
               GoRoute(
                 path: "cart",
                 builder: (context, state) => const CartScreen(),
-              )
+              ),
             ],
           ),
         ],

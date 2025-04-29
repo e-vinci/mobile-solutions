@@ -1,31 +1,12 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../view_models/cart_view_model.dart';
-import '../models/dish.dart';
-import 'menu.dart';
+import '../../view_models/app_view_model.dart';
+import '../widgets/menu_widget.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  final List<Dish> dishes = [];
-
-  @override
-  void initState() {
-    Dish.fetchAll().then(
-      (value) => setState(() => dishes.addAll(value)),
-      onError: (error) => log(error),
-    );
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     minWidth: 16,
                     minHeight: 16,
                   ),
-                  child: Consumer<CartViewModel>(
+                  child: Consumer<AppViewModel>(
                     builder: (context, viewModel, _) => Text(
                       '${viewModel.total}',
                       style: const TextStyle(
@@ -71,9 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: Center(
-        child: dishes.isNotEmpty
-            ? Menu(menu: dishes)
-            : const CircularProgressIndicator(),
+        child: Consumer<AppViewModel>(
+          builder: (context, viewModel, _) => viewModel.dishes.isNotEmpty
+              ? MenuWidget(menu: viewModel.dishes)
+              : const CircularProgressIndicator(),
+        ),
       ),
     );
   }

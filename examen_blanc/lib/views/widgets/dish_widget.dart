@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/dish.dart';
-import '../view_models/cart_view_model.dart';
+import '../../models/dish.dart';
+import '../../utils/number_format.dart';
+import '../../view_models/app_view_model.dart';
 
 class DishWidget extends StatelessWidget {
   final Dish dish;
@@ -22,11 +23,11 @@ class DishWidget extends StatelessWidget {
                 leading: IconButton(
                   icon: const Icon(Icons.add_shopping_cart_outlined),
                   onPressed: () =>
-                      Provider.of<CartViewModel>(context, listen: false)
+                      Provider.of<AppViewModel>(context, listen: false)
                           .addToCart(dish),
                 ),
                 title: Text(dish.name),
-                subtitle: Text("${dish.price} €"),
+                subtitle: Text("${formatter.format(dish.price)} €"),
               ),
             ),
             Padding(
