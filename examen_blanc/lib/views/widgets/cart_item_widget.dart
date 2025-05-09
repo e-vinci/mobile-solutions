@@ -33,12 +33,14 @@ class CartItemWidget extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: () =>
-                      Provider.of<AppViewModel>(context).addToCart(item.dish),
+                      Provider.of<AppViewModel>(context, listen: false)
+                          .addToCart(item.dish),
                   icon: const Icon(Icons.add),
                 ),
                 IconButton(
-                  onPressed: () => Provider.of<AppViewModel>(context)
-                      .removeFromCart(item.dish),
+                  onPressed: () =>
+                      Provider.of<AppViewModel>(context, listen: false)
+                          .removeFromCart(item.dish),
                   icon: const Icon(Icons.remove),
                 ),
               ],
